@@ -3,6 +3,8 @@ library(adegenet)
 library(poppr)
 library(pegas)
 
+#gl_BMB created in the file conversion step from VCF file
+
 amova.strata <- read.table("AMOVA_strata.txt", header = FALSE) #read in populations to become the strata the file has on colum - same # as individuals (in order) no header
 strata(gl_BMB) <- amova.strata
 
