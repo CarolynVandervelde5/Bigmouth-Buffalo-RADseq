@@ -1,0 +1,26 @@
+## SNPs under selection
+library(pcadapt)
+library(qvalue)
+
+#Choosing the number K of Principal Components
+library(LEA)
+
+path_to_file <- "/path_to_lfmm_file") #path the the lfmm file created in the data conversion step 
+filename <- read.pcadapt(path_to_file, type = "lfmm")
+
+x <- pcadapt(input = filename, K = 14) #determine best k for next bit 
+plot(x, option = "screeplot")
+
+x <- pcadapt(filename, K = 5) #test statistic for detecting outlier SNPs is the Mahalanobis distance
+summary(x)
+
+plot(x , option = "manhattan") #manhatan plot allows you to easily spot regions of the genome that cross a particular significance threshold, not useful if your data was denovo aligned
+plot(x, option = "qqplot") #check the expected uniform distribution of the p-values
+hist(x$pvalues, xlab = "p-values", main = NULL, breaks = 50, col = "orange") #confirms that most of the p-values follow an uniform distribution. The excess of small p-values indicates the presence of outliers.
+plot(x, option = "stat.distribution") #The presence of outliers is also visible when plotting a histogram of the test statistic 𝐷𝑗
+
+#convert p values to q values, SNPs with q-values less than 𝛼 will be considered as outliers with an expected false discovery rate bounded by 𝛼
+qval <- qvalue(x$pvalues)$qvalues
+alpha <- 0.1
+outliers <- which(qval < alpha)
+length(outliers)
