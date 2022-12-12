@@ -1,0 +1,35 @@
+setwd("/Users/path_to_the_directory_you_want")
+#define colour pallet
+cols2 <- c("#88CCEE", "#CC6677", "#DDCC77", "#117733", "#332288", "#AA4499","#44AA99", "#999933", "#882255", "#661100", "#6699CC", "#888888", "#FF4500")
+library(tidyverse)
+library(ggplot2)
+
+# Read in VCF and pop data file
+library(adegenet)
+library(vcfR) 
+vcf_BMB <- read.vcfR("singletons_r30R75mac2_allpopulations.recode.vcf") #read in vcr
+head(vcf_BMB) #validate
+queryMETA(vcf_BMB) #summersising meta usefull for comprehension of the file’s contents.
+pop.data <- read.table("pop_map.txt", header = TRUE) #read in population -> 2 column file, pop ID and populations
+all(colnames(vcf_BMB@gt) [-1] == pop.data$State) #check that all the samples in the VCF and the population data frame are included
+
+#convert to genlight
+gl_BMB <- vcfR2genlight(vcf_BMB) 
+ploidy(gl_BMB) <- 2 #specify the ploidy of the organism
+pop(gl_BMB) <- pop.data$population #specify the population
+gl_BMB # genlight object
+
+#convert vcfr to lfmm where NA values are encoded as 9
+library(LEA)
+lfmm_BMB <- vcf2lfmm("/path_to_vcf_file/.vcf", output.file = "/path_to the created_lfmm_file/.lfmm", force = TRUE)
+lfmm_BMB <- read.lfmm("name_of_the_lfmm.lfmm")
+
+#convert vcfr to genind
+gen_BMB <- vcfR2genind(vcf_BMB, sep = "[|/]", return.alleles = TRUE) #convert to genind
+pop(gen_BMB) <- pop.data$population #specify the population for genind object using populations file read in in the vcf block above
+
+#convert vcfr to genind file of hierfstat format b/c works best wih Ne and Fst analysies to come
+library(hierfstat)
+genH_BMB <- vcfR2genind(vcf_BMB, sep = "[|/]", return.alleles = TRUE) #convert to genind
+pop(genH_BMB) <- pop.data$population #specify the population for genind object again from file read in with the vcf block of code above
+loci_BMB <- genind2hierfstat(genH_BMB) #NeV2_LDNe_create require data frame of type hierfstat
