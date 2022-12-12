@@ -1,0 +1,9 @@
+#Correlation test of size vs admixture
+library("ggpubr")
+
+sizevadmix <- read.delim("Age_vs_admix_corrlation.txt", header = TRUE) 
+
+ggscatter(sizevadmix, x = "Total.Length..mm.", y = "Admixture..", 
+          add = "reg.line", conf.int = TRUE, 
+          cor.coef = TRUE, cor.method = "pearson",
+          xlab = "Total Length (mm)", ylab = "% admixture from Saskatchewan")
