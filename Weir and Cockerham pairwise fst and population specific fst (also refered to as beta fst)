@@ -1,0 +1,29 @@
+# weir and cockerham pairwise fst and population specific fst (also refered to as beta fst)
+library(hierfstat)
+library("reshape")
+
+# loci_BMB file created in the file conversion step from VCF 
+#Pairwise Fst using weir and cockerham fst in hierfstat
+fst.pair.BMB <- pairwise.WCfst(loci_BMB, diploid = TRUE)
+fst.pair.BMB
+
+#Population specific fst
+fst.popspef.BMB <- betas(gen_BMB,nboot=0, lim=c(0.025,0.975), diploid=TRUE, betaijT=FALSE)
+fst.popspef.BMB
+
+#heat map of pairwse fst
+data_melt <- melt.array(fst.pair.BMB)  #Convert to proper matrix
+col.order <- c("LR","RIV","WK","RL","GN","CD","BS","MIS","RR","LRR","LES", "SK") #re-order matrix
+hetmap <- fst.pair.BMB[col.order, col.order]
+data_melt <- melt.array(hetmap)                                   # re-convert to proper data type       
+head(data_melt) 
+ggp <- ggplot(data_melt, aes(X1, X2)) +                           # Create heatmap with ggplot2
+  geom_tile(aes(fill = value))
+ggp
+ggp + scale_fill_gradient(low = "light blue2", high = "pink3")    # re-colour heatmap
+
+#neighbour joining tree of pairwise fst 
+pair.fst.nj <- nj(fst.pair.BMB)
+# population labels colored by population colors 
+plot(pair.fst.nj,type="u",sub="",use.edge.length = TRUE,tip.color ="black",cex=1)
+add.scale.bar(length = NULL, ask = FALSE, lwd = 1, lcol = "black",cex=1)
