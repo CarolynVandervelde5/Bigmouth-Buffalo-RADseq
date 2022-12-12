@@ -1,0 +1,12 @@
+## effective population size (Ne)
+library(RLDNe)
+library(hierfstat)
+
+#genpop.txt is from PGDspder coverting the original vcf to genepop format
+#output file will be in the working directory
+#mating system of 0 = random mating, default is manogamy, 
+
+param_files <- NeV2_LDNe_create(input_file = "genepop.txt", param_file = "Ne_params.txt", 
+                                NE_out_file = "Ne_out.txt", matingsystem = 0)
+run_LDNe(LDNe_params = param_files$param_file)
+Ne_estimates <- (path = param_files$Ne_out_tab)
