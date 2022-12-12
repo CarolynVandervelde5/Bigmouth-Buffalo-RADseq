@@ -1,0 +1,13 @@
+## AMOVA
+library(adegenet)
+library(poppr)
+library(pegas)
+
+amova.strata <- read.table("AMOVA_strata.txt", header = FALSE) #read in populations to become the strata the file has on colum - same # as individuals (in order) no header
+strata(gl_BMB) <- amova.strata
+
+BMB.AMOVA <- poppr.amova(gl_BMB, hier = ~V1, within = TRUE, method = "ade4") 
+BMB.AMOVA
+amova.test <- randtest(BMB.AMOVA)
+plot(amova.test)
+amova.test
