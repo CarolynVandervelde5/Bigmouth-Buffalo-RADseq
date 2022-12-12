@@ -1,0 +1,42 @@
+#Assignment accuracy 
+
+library(assignPOP)
+library(radiator)
+library(klaR)
+
+#sturcture file created in PGDSpider from VCF
+
+structure_BMB <- read.Structure("structure.txt", ploidy = 2)
+
+assign.MC(structure_BMB, train.inds=c(0.5, 0.7, 0.9), train.loci=c(0.1, 0.25, 0.5, 1),
+          loci.sample="fst", iterations=30, model="svm", dir="Result-folder/")
+
+assign.kfold(structure_BMB, k.fold=c(3, 4, 5), train.loci=c(0.1, 0.25, 0.5, 1), 
+             loci.sample="random", model="lda", dir="Result-folder2/")
+
+accuMC <- accuracy.MC(dir = "Result-folder/")
+accuKF <- accuracy.kfold(dir = "Result-folder2/")
+accuMC <- read.table("Rate_of_48_tests_14_pops.txt", header=T)
+check.loci(dir = "Result-folder/", top.loci = 20)
+
+#box plot
+accuracy.plot(accuMC, pop = "all")
+
+#Monte-Carlo cross-validation using genetic loci
+library(ggplot2)
+accuracy.plot(accuMC, pop=c("all", "10", "11", "12", "13", "14", "15", "2", "3", "4", "5", "6", "7", "8", "9" )) +
+  ylim(0, 1) + #Set y limit between 0 and 1
+  annotate("segment",x=0.4,xend=3.6,y=0.33,yend=0.33,colour="red",size=1) + #Add a red horizontal line at y = 0.33 (null assignment rate for 3 populations)
+  ggtitle("Monte-Carlo cross-validation using genetic loci")+ #Add a plot title
+  theme(plot.title = element_text(size=20, face="bold")) #Edit plot title text size
+
+#membership probability plot
+membership.plot(dir = "Result-folder2/")
+
+#Print mean and standard deviation across assignment tests
+#Default setting reads through all the files in the specified result folder
+assign.matrix( dir="Result-folder/")
+#Users also can specify certain results for printing the assignment matrix
+assign.matrix( dir="Result-folder/", train.inds=c(0.7, 0.9), train.loci=c(0.5, 1))
+
+
