@@ -1,0 +1,22 @@
+#!/bin/bash
+#SBATCH --time=05:00:00
+#SBATCH --account=def-kmj477
+#SBATCH --mem=24000M
+#SBATCH --mail-user=vandervc@myumanitoba.ca
+#SBATCH --mail-type=ALL
+
+#load stacks modual and its dependancies
+module load StdEnv/2020 stacks/2.60
+
+if [[ "$N_CPU" ]] ;then
+        # Environment variable N_CPU is defined
+        ncpu=$N_CPU
+else
+    	ncpu=1
+fi
+
+for M in 1 ;do
+	out_dir=/scratch/carolynv/test.denovo/results
+        log_file=$out_dir/populations.oe
+        populations -P /scratch/carolynv/stacks.M1 -M /scratch/carolynv/info/testers_pop.txt -O $out_dir -r 0.80 -t $ncpu &> $log_file
+done
