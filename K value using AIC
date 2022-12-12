@@ -1,0 +1,4 @@
+#get k value using AIC method
+BMB.aic <- snapclust.choose.k(max = 10, gen_BMB)
+plot(1:10, BMB.aic, xlab = "Number of clusters (k)",
+     ylab = "AIC", type = "b", pch = 20, cex = 3)
