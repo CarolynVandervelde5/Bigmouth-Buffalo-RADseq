@@ -1,0 +1,48 @@
+library(hierfstat)
+
+#parse data into each populations using the genH_BMB file created in the file conversion script from a VCF
+hierf_BMB.pop.BS <- genH_BMB[loci_BMB$pop == "BS"]
+hierf_BMB.pop.CD <- genH_BMB[loci_BMB$pop == "CD"]
+hierf_BMB.pop.GN <- genH_BMB[loci_BMB$pop == "GN"]
+hierf_BMB.pop.WK <- genH_BMB[loci_BMB$pop == "WK"]
+hierf_BMB.pop.RIV <- genH_BMB[loci_BMB$pop == "RIV"]
+hierf_BMB.pop.RL <- genH_BMB[loci_BMB$pop == "RL"]
+hierf_BMB.pop.LR <- genH_BMB[loci_BMB$pop == "LR"]
+hierf_BMB.pop.LES <- genH_BMB[loci_BMB$pop == "LES"]
+hierf_BMB.pop.LRR <- genH_BMB[loci_BMB$pop == "LRR"]
+hierf_BMB.pop.RR <- genH_BMB[loci_BMB$pop == "RR"]
+hierf_BMB.pop.SK <- genH_BMB[loci_BMB$pop == "SK"]
+hierf_BMB.pop.MIS <- genH_BMB[loci_BMB$pop == "MIS"]
+hierf_BMB.pop.ON <- genH_BMB[loci_BMB$pop == "ON"]
+
+#basic stats for each population where hs is actualy he 
+higherfstat.BMB <- basic.stats(loci_BMB, diploid = TRUE) #Basic stats for all populations
+print(higherfstat.BMB$overall)
+
+#Basic stats for each individual population 
+higherfstat.BMB.pop.BS <- basic.stats(hierf_BMB.pop.BS, diploid = TRUE) 
+print(higherfstat.BMB.pop.BS$overall)
+higherfstat.BMB.pop.CD <- basic.stats(hierf_BMB.pop.CD, diploid = TRUE) 
+print(higherfstat.BMB.pop.CD$overall)
+higherfstat.BMB.pop.GN <- basic.stats(hierf_BMB.pop.GN, diploid = TRUE) 
+print(higherfstat.BMB.pop.GN$overall)
+higherfstat.BMB.pop.WK <- basic.stats(hierf_BMB.pop.WK, diploid = TRUE) 
+print(higherfstat.BMB.pop.WK$overall)
+higherfstat.BMB.pop.RIV <- basic.stats(hierf_BMB.pop.RIV, diploid = TRUE) 
+print(higherfstat.BMB.pop.RIV$overall)
+higherfstat.BMB.pop.RL <- basic.stats(hierf_BMB.pop.RL, diploid = TRUE) 
+print(higherfstat.BMB.pop.RL$overall)
+higherfstat.BMB.pop.LR <- basic.stats(hierf_BMB.pop.LR, diploid = TRUE) 
+print(higherfstat.BMB.pop.LR$overall)
+higherfstat.BMB.pop.LES <- basic.stats(hierf_BMB.pop.LES, diploid = TRUE)  
+print(higherfstat.BMB.pop.LES$overall)
+higherfstat.BMB.pop.LRR <- basic.stats(hierf_BMB.pop.LRR, diploid = TRUE) 
+print(higherfstat.BMB.pop.LRR$overall)
+higherfstat.BMB.pop.RR <- basic.stats(hierf_BMB.pop.RR, diploid = TRUE) 
+print(higherfstat.BMB.pop.RR$overall)
+higherfstat.BMB.pop.SK <- basic.stats(hierf_BMB.pop.SK, diploid = TRUE)  
+print(higherfstat.BMB.pop.SK$overall)
+higherfstat.BMB.pop.MIS <- basic.stats(hierf_BMB.pop.MIS, diploid = TRUE)  
+print(higherfstat.BMB.pop.MIS$overall)
+higherfstat.BMB.pop.ON <- basic.stats(hierf_BMB.pop.ON, diploid = TRUE)  
+print(higherfstat.BMB.pop.ON$overall)
